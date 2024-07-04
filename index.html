@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redimensionar y Redondear Esquina de Imagen</title>
+    <!-- Incluir JSZip desde una CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.min.js"></script>
 </head>
 <body>
     <h2>Redimensionar y Redondear Esquina de Imagen</h2>
     <input type="file" id="upload" accept="image/png, image/jpeg, image/webp" multiple>
     <div id="results"></div>
-    <button id="download-all-btn">Descargar Todas las Imágenes</button>
+    <button id="download-all-btn">Descargar Todas las Imágenes en ZIP</button>
     <script src="script.js"></script>
 </body>
 </html>
