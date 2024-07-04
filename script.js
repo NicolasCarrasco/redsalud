@@ -4,7 +4,7 @@ document.getElementById('upload').addEventListener('change', function (e) {
     resultsDiv.innerHTML = ''; // Clear results div
 
     if (files.length > 0) {
-        Array.from(files).forEach(file => {
+        Array.from(files).forEach((file, index) => {
             const reader = new FileReader();
             reader.onload = function (event) {
                 const img = new Image();
@@ -47,23 +47,35 @@ document.getElementById('upload').addEventListener('change', function (e) {
                     resultImg.src = canvas.toDataURL('image/png');
                     resultImg.alt = 'Imagen Procesada';
                     resultsDiv.appendChild(resultImg);
+
+                    resultImg.onload = function() {
+                        // Agregar la imagen procesada al archivo ZIP
+                        const base64Data = resultImg.src.split(',')[1];
+                        zip.file(`imagen-procesada-${index + 1}.png`, base64Data, {base64: true});
+                    };
+
+                    // Habilitar el botón de descarga una vez que todas las imágenes se han procesado
+                    if (index === files.length - 1) {
+                        document.getElementById('download-all-btn').style.display = 'block';
+                    }
                 };
                 img.src = event.target.result;
             };
             reader.readAsDataURL(file);
         });
-
-        // Habilitar el botón de descarga
-        document.getElementById('download-all-btn').style.display = 'block';
     }
 });
 
+// Crear una instancia de JSZip
+const zip = new JSZip();
+
 document.getElementById('download-all-btn').addEventListener('click', function () {
-    const images = document.querySelectorAll('#results img');
-    images.forEach((img, index) => {
-        const link = document.createElement('a');
-        link.download = `rounded-${index + 1}.png`;
-        link.href = img.src;
-        link.click();
-    });
+    // Generar el archivo ZIP y desencadenar la descarga
+    zip.generateAsync({type: 'blob'})
+        .then(function (content) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(content);
+            link.download = 'imagenes-procesadas.zip';
+            link.click();
+        });
 });
