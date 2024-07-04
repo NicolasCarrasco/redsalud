@@ -15,6 +15,10 @@ document.getElementById('upload').addEventListener('change', function (e) {
                 canvas.width = width;
                 canvas.height = height;
 
+                // Dibujar fondo blanco
+                ctx.fillStyle = "white";
+                ctx.fillRect(0, 0, width, height);
+
                 // Dibujar la imagen original
                 ctx.drawImage(img, 0, 0, width, height);
 
@@ -28,6 +32,11 @@ document.getElementById('upload').addEventListener('change', function (e) {
                 ctx.lineTo(0, height);
                 ctx.closePath();
                 ctx.fill();
+
+                // Restaurar operación por defecto y dibujar área sobre las zonas trasnparecentes
+                ctx.globalCompositeOperation = 'destination-over'
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, width, height);
 
                 // Mostrar el resultado
                 const resultImg = document.getElementById('result');
